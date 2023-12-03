@@ -3,28 +3,20 @@ import pygame
 from pygame.locals import *
 
 
-def process_event(event):
+def process_event(event, player1, player2):
     if event.type == QUIT:
         pygame.quit()
         sys.exit()
     elif event.type == MOUSEBUTTONDOWN:
         pass
-    elif event.type == KEYDOWN:
-        if event.key == K_w:
-            pass
-        elif event.key == K_a:
-            pass
-        elif event.key == K_s:
-            pass
-        elif event.key == K_d:
-            pass
-        elif event.key == K_UP:
-            pass
-        elif event.key == K_LEFT:
-            pass
-        elif event.key == K_DOWN:
-            pass
-        elif event.key == K_RIGHT:
-            pass
-        elif event.key == K_SPACE:
-            pass
+    keys = pygame.key.get_pressed()
+    if keys[K_w]:
+        player1.state = "jumping up"
+    elif keys[K_a]:
+        player1.state = "walking left"
+    elif keys[K_s]:
+        player1.state = "crouching"
+    elif keys[K_d]:
+        player1.state = "walking right"
+    else:
+        player1.state = "standing"
