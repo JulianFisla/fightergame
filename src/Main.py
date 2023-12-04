@@ -150,6 +150,7 @@ def update_background():
 
 
 def render_game():
+
     update_background()
     player1.draw(WINDOW)
     player2.draw(WINDOW)
