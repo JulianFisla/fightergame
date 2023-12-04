@@ -10,6 +10,6 @@ class Player2(Character):
         pass
         # print("Player 2:", self.state)
 
-    def draw(self):
+    def draw(self, window):
         pass
 
