@@ -4,6 +4,8 @@ from src import EventHandler
 from src.Player1 import Player1
 from src.Player2 import Player2
 
+from PIL import Image
+
 # Colours
 BACKGROUND = (255, 255, 255)
 
@@ -21,7 +23,38 @@ player2 = Player2(0, 0, 100, 5)
 
 
 def load_images():
-    pass
+
+    standing_left = []
+
+    for i in range(4):
+        img = Image.open("../assets/sprites/standing_left_" + str(i + 1) + ".png")
+        standing_left.append(img)
+
+    player1.images["standing_left"] = standing_left
+
+    standing_right = []
+
+    for i in range(4):
+        img = Image.open("../assets/sprites/standing_right_" + str(i + 1) + ".png")
+        standing_right.append(img)
+
+    player1.images["standing_right"] = standing_right
+
+    running_left = []
+
+    for i in range(7):
+        img = Image.open("../assets/sprites/running_left_" + str(i + 1) + ".png")
+        running_left.append(img)
+
+    player1.images["running_left"] = running_left
+
+    running_right = []
+
+    for i in range(8):
+        img = Image.open("../assets/sprites/running_right_" + str(i + 1) + ".png")
+        running_right.append(img)
+
+    player1.images["running_right"] = running_right
 
 
 def update_game_state():
@@ -41,7 +74,6 @@ def render_game():
 
 
 def start_game():
-
     load_images()
 
 

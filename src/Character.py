@@ -16,6 +16,7 @@ class Character(ABC):
         self.health = health
         self.speed = speed
         self.state = "standing"
+        self.images = {}
 
     def update(self):
         raise NotImplementedError

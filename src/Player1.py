@@ -7,7 +7,8 @@ class Player1(Character):
         super().__init__(x, y, health, speed)
 
     def update(self):
-        print("Player 1:", self.state)
+        pass
+        # print("Player 1:", self.state)
 
     def draw(self):
         pass
