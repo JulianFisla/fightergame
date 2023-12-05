@@ -22,7 +22,7 @@ WINDOW_HEIGHT = 800
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('2D Fighter')
 
-player1 = Player1(100, 520, 500, 520, 100, 7)
+player1 = Player1(420, 520, 175 + 210, 0, 100, 8)
 player2 = Player2(0, 0, 0, 0, 100, 5)
 
 player1_start_x = player1.x
@@ -124,8 +124,15 @@ def update_background():
 
     background_animation_clock = background_animation_tick % 54
 
-    background_offset_x = -(player1.x - player1_start_x) * 1.5 - 380
-    background_offset_y = -(player1.y - player1_start_y) * 1.5
+    if 220 <= player1.x <= 750:
+        background_offset_x = -50 - player1.x * 1.5
+        background_offset_y = 0
+        player1.wall_collision = False
+    else:
+        player1.wall_collision = True
+
+    # background_offset_x = -(player1.x - player1_start_x) * 1.5 - 380 - 250
+    # background_offset_y = -(player1.y - player1_start_y) * 1.5
 
     background_offset = (background_offset_x, background_offset_y)
 
@@ -154,6 +161,7 @@ def render_game():
     update_background()
     player1.draw(WINDOW)
     player2.draw(WINDOW)
+    player1.draw_hitbox(WINDOW)
     pygame.display.update()
 
 

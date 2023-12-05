@@ -1,8 +1,9 @@
 from abc import ABC
 
+import pygame
+
 
 class Character(ABC):
-
     x: int
     y: int
     screen_x: int
@@ -13,6 +14,7 @@ class Character(ABC):
     state: str
     animation_tick: int
     facing: str
+    hitbox: pygame.rect
 
     def __init__(self, screen_x, screen_y, x, y, health, speed):
         self.screen_x = screen_x
