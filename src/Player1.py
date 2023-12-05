@@ -12,7 +12,8 @@ class Player1(Character):
 
     def update(self):
 
-        # print("Player x:", self.x, "Player y:", self.y)
+        print("Player x:", self.x, "Player y:", self.y)
+        print("Player screen_x:", self.screen_x, "Player screen_y:", self.screen_y)
 
         if self.animation_tick == 10000:
             self.animation_tick = 0
@@ -27,6 +28,8 @@ class Player1(Character):
                 self.screen_x -= self.speed * 1.5
                 self.x -= self.speed
             else:
+                self.screen_x = 420
+                self.screen_y = 520
                 self.x -= self.speed
         elif self.state == "crouching":
             self.x += 0
@@ -38,6 +41,8 @@ class Player1(Character):
                 self.screen_x += self.speed * 1.5
                 self.x += self.speed
             else:
+                self.screen_x = 420
+                self.screen_y = 520
                 self.x += self.speed
 
     def draw(self, window):
@@ -133,6 +138,18 @@ class Player1(Character):
                     self.images["running_right"][1], self.images["running_right"][3], self.images["running_right"][5],
                     self.images["running_right"][7]):
                 self.hitbox = pygame.Rect(self.screen_x, self.screen_y - 70, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["standing_left"][1]:
+                self.hitbox = pygame.Rect(self.screen_x + 10, self.screen_y, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["standing_left"][3]:
+                self.hitbox = pygame.Rect(self.screen_x - 5, self.screen_y, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["standing_right"][1]:
+                self.hitbox = pygame.Rect(self.screen_x - 10, self.screen_y, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["standing_right"][3]:
+                self.hitbox = pygame.Rect(self.screen_x - 20, self.screen_y, self.current_sprite.get_width(),
                                           self.current_sprite.get_height())
             else:
                 self.hitbox = pygame.Rect(self.screen_x, self.screen_y, self.current_sprite.get_width(),

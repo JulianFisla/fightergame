@@ -4,8 +4,6 @@ from src import EventHandler
 from src.Player1 import Player1
 from src.Player2 import Player2
 
-from PIL import Image
-
 # Colours
 background = []
 background_animation_tick = 0
@@ -22,7 +20,7 @@ WINDOW_HEIGHT = 800
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('2D Fighter')
 
-player1 = Player1(420, 520, 175 + 210, 0, 100, 8)
+player1 = Player1(420, 520, 175 + 210, 0, 100, 7)
 player2 = Player2(0, 0, 0, 0, 100, 5)
 
 player1_start_x = player1.x
@@ -130,6 +128,8 @@ def update_background():
         player1.wall_collision = False
     else:
         player1.wall_collision = True
+
+    # print("background_offset_x:", background_offset_x, "background_offset_y:", background_offset_y)
 
     # background_offset_x = -(player1.x - player1_start_x) * 1.5 - 380 - 250
     # background_offset_y = -(player1.y - player1_start_y) * 1.5
