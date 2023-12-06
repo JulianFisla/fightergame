@@ -4,13 +4,21 @@ from pygame.locals import *
 
 
 def process_event(event, player1, player2):
+
     if event.type == QUIT:
         pygame.quit()
         sys.exit()
     elif event.type == MOUSEBUTTONDOWN:
         pass
     keys = pygame.key.get_pressed()
-    if keys[K_w]:
+
+    if keys[K_SPACE] and keys[K_d] and player1.grounded:
+        player1.state = "jumping right"
+    elif keys[K_SPACE] and keys[K_a] and player1.grounded:
+        player1.state = "jumping left"
+    elif keys[K_SPACE] and player1.grounded:
+        player1.state = "jumping up"
+    elif keys[K_w]:
         pass
         # player1.state = "jumping up"
     elif keys[K_a]:

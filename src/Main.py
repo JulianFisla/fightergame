@@ -20,7 +20,7 @@ WINDOW_HEIGHT = 800
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('2D Fighter')
 
-player1 = Player1(420, 520, 175 + 210, 0, 100, 7)
+player1 = Player1(420, 520, 175 + 210, 0, 100, 9)
 player2 = Player2(0, 0, 0, 0, 100, 5)
 
 player1_start_x = player1.x
@@ -87,6 +87,38 @@ def load_images():
         running_right.append(scaled_image)
 
     player1.images["running_right"] = running_right
+
+    jumping_right = []
+
+    for i in range(7):
+        # Load the image into a Surface
+        image = pygame.image.load("../assets/sprites/jumping_right_" + str(i + 1) + ".png")
+
+        # Calculate the new size
+        new_size = (image.get_width() * 4, image.get_height() * 4)
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(image, new_size)
+
+        jumping_right.append(scaled_image)
+
+    player1.images["jumping_right"] = jumping_right
+
+    jumping_left = []
+
+    for i in range(7):
+        # Load the image into a Surface
+        image = pygame.image.load("../assets/sprites/jumping_left_" + str(i + 1) + ".png")
+
+        # Calculate the new size
+        new_size = (image.get_width() * 4, image.get_height() * 4)
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(image, new_size)
+
+        jumping_left.append(scaled_image)
+
+    player1.images["jumping_left"] = jumping_left
 
     for i in range(9):
         # Load the image into a Surface

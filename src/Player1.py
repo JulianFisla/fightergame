@@ -6,22 +6,69 @@ from src.Character import Character
 class Player1(Character):
     wall_collision = False
     current_sprite = None
+    grounded = True
+    gravity = 1
+    jump_force = 25
+    current_jump = jump_force
 
     def __init__(self, screen_x, screen_y, x, y, health, speed):
         super().__init__(screen_x, screen_y, x, y, health, speed)
 
     def update(self):
 
-        print("Player x:", self.x, "Player y:", self.y)
-        print("Player screen_x:", self.screen_x, "Player screen_y:", self.screen_y)
+        # print("Player 1:", self.state, "Player 1:", self.grounded)
+
+        if self.screen_y >= 520:
+            self.screen_y = 520
+            self.current_jump = self.jump_force
+            self.grounded = True
+
+        else:
+            self.grounded = False
+
+        # print("Player x:", self.x, "Player y:", self.y)
+        # print("Player screen_x:", self.screen_x, "Player screen_y:", self.screen_y)
 
         if self.animation_tick == 10000:
             self.animation_tick = 0
         self.animation_tick += 1
 
-        if self.state == "standing":
-            self.x += 0
-        elif self.state == "walking left":
+        if self.state == "standing" and not self.grounded:
+            self.y += self.current_jump
+            self.current_jump -= self.gravity
+            self.screen_y -= self.current_jump
+
+        elif self.state == "walking left" and not self.grounded:
+            if self.x <= 0:
+                pass
+            elif self.wall_collision:
+                self.screen_x -= self.speed * 1.5
+                self.x -= self.speed
+
+            else:
+                self.screen_x = 420
+                self.x -= self.speed
+
+            self.y += self.current_jump
+            self.current_jump -= self.gravity
+            self.screen_y -= self.current_jump
+
+        elif self.state == "walking right" and not self.grounded:
+
+                if self.x >= 1020:
+                    pass
+                elif self.wall_collision:
+                    self.screen_x += self.speed * 1.5
+                    self.x += self.speed
+                else:
+                    self.screen_x = 420
+                    self.x += self.speed
+
+                self.y += self.current_jump
+                self.current_jump -= self.gravity
+                self.screen_y -= self.current_jump
+
+        elif self.state == "walking left" and self.grounded:
             if self.x <= 0:
                 pass
             elif self.wall_collision:
@@ -31,9 +78,7 @@ class Player1(Character):
                 self.screen_x = 420
                 self.screen_y = 520
                 self.x -= self.speed
-        elif self.state == "crouching":
-            self.x += 0
-        elif self.state == "walking right":
+        elif self.state == "walking right" and self.grounded:
 
             if self.x >= 1020:
                 pass
@@ -45,13 +90,54 @@ class Player1(Character):
                 self.screen_y = 520
                 self.x += self.speed
 
+        elif self.state == "jumping left":
+            if self.x <= 0:
+                pass
+            elif self.wall_collision:
+                self.screen_x -= self.speed * 1.5
+                self.x -= self.speed
+            else:
+                self.screen_x = 420
+                self.x -= self.speed
+
+            self.y += self.current_jump
+            self.current_jump -= self.gravity
+            self.screen_y -= self.current_jump
+
+        elif self.state == "jumping right":
+
+            if self.x >= 1020:
+                pass
+            elif self.wall_collision:
+                self.screen_x += self.speed * 1.5
+                self.x += self.speed
+            else:
+                self.screen_x = 420
+                self.x += self.speed
+
+            self.y += self.current_jump
+            self.current_jump -= self.gravity
+            self.screen_y -= self.current_jump
+        elif self.state == "jumping up":
+            if self.grounded:
+                self.current_jump = self.jump_force
+                self.y += self.current_jump
+                self.current_jump -= self.gravity
+                self.screen_y -= self.current_jump
+            else:
+                self.y += self.current_jump
+                self.current_jump -= self.gravity
+                self.screen_y -= self.current_jump
+
     def draw(self, window):
 
         standing_animation_clock = self.animation_tick % 60
         walking_left_animation_clock = self.animation_tick % 63
         walking_right_animation_clock = self.animation_tick % 72
+        jumping_left_animation_clock = self.animation_tick % 70
+        jumping_right_animation_clock = self.animation_tick % 70
 
-        if self.state == "standing":
+        if self.state == "standing" and self.grounded:
             if self.facing == "left":
                 if standing_animation_clock < 15:
                     window.blit(self.images["standing_left"][0], (self.screen_x, self.screen_y))
@@ -78,7 +164,52 @@ class Player1(Character):
                 else:
                     window.blit(self.images["standing_right"][3], (self.screen_x - 20, self.screen_y))
                     self.current_sprite = self.images["standing_right"][3]
-        elif self.state == "walking left":
+        elif self.state == "standing" and not self.grounded:
+            if self.facing == "left":
+                if jumping_left_animation_clock < 10:
+                    window.blit(self.images["jumping_left"][0], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][0]
+                elif jumping_left_animation_clock < 20:
+                    window.blit(self.images["jumping_left"][1], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][1]
+                elif jumping_left_animation_clock < 30:
+                    window.blit(self.images["jumping_left"][2], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][2]
+                elif jumping_left_animation_clock < 40:
+                    window.blit(self.images["jumping_left"][3], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][3]
+                elif jumping_left_animation_clock < 50:
+                    window.blit(self.images["jumping_left"][4], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][4]
+                elif jumping_left_animation_clock < 60:
+                    window.blit(self.images["jumping_left"][5], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][5]
+                else:
+                    window.blit(self.images["jumping_left"][6], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][6]
+            elif self.facing == "right":
+                if jumping_right_animation_clock < 10:
+                    window.blit(self.images["jumping_right"][0], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][0]
+                elif jumping_right_animation_clock < 20:
+                    window.blit(self.images["jumping_right"][1], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][1]
+                elif jumping_right_animation_clock < 30:
+                    window.blit(self.images["jumping_right"][2], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][2]
+                elif jumping_right_animation_clock < 40:
+                    window.blit(self.images["jumping_right"][3], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][3]
+                elif jumping_right_animation_clock < 50:
+                    window.blit(self.images["jumping_right"][4], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][4]
+                elif jumping_right_animation_clock < 60:
+                    window.blit(self.images["jumping_right"][5], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][5]
+                else:
+                    window.blit(self.images["jumping_right"][6], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][6]
+        elif self.state == "walking left" and self.grounded:
             if walking_left_animation_clock < 9:
                 window.blit(self.images["running_left"][0], (self.screen_x, self.screen_y))
                 self.current_sprite = self.images["running_left"][0]
@@ -100,7 +231,7 @@ class Player1(Character):
             else:
                 window.blit(self.images["running_left"][6], (self.screen_x, self.screen_y))
                 self.current_sprite = self.images["running_left"][6]
-        elif self.state == "walking right":
+        elif self.state == "walking right" and self.grounded:
             if walking_right_animation_clock < 9:
                 window.blit(self.images["running_right"][0], (self.screen_x, self.screen_y))
                 self.current_sprite = self.images["running_right"][0]
@@ -125,6 +256,139 @@ class Player1(Character):
             else:
                 window.blit(self.images["running_right"][7], (self.screen_x, self.screen_y - 70))
                 self.current_sprite = self.images["running_right"][7]
+        elif self.state == "jumping left":
+            if jumping_left_animation_clock < 10:
+                window.blit(self.images["jumping_left"][0], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][0]
+            elif jumping_left_animation_clock < 20:
+                window.blit(self.images["jumping_left"][1], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][1]
+            elif jumping_left_animation_clock < 30:
+                window.blit(self.images["jumping_left"][2], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][2]
+            elif jumping_left_animation_clock < 40:
+                window.blit(self.images["jumping_left"][3], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][3]
+            elif jumping_left_animation_clock < 50:
+                window.blit(self.images["jumping_left"][4], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][4]
+            elif jumping_left_animation_clock < 60:
+                window.blit(self.images["jumping_left"][5], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][5]
+            else:
+                window.blit(self.images["jumping_left"][6], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][6]
+        elif self.state == "jumping right":
+            if jumping_right_animation_clock < 10:
+                window.blit(self.images["jumping_right"][0], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][0]
+            elif jumping_right_animation_clock < 20:
+                window.blit(self.images["jumping_right"][1], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][1]
+            elif jumping_right_animation_clock < 30:
+                window.blit(self.images["jumping_right"][2], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][2]
+            elif jumping_right_animation_clock < 40:
+                window.blit(self.images["jumping_right"][3], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][3]
+            elif jumping_right_animation_clock < 50:
+                window.blit(self.images["jumping_right"][4], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][4]
+            elif jumping_right_animation_clock < 60:
+                window.blit(self.images["jumping_right"][5], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][5]
+            else:
+                window.blit(self.images["jumping_right"][6], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][6]
+        elif self.state == "walking left" and not self.grounded:
+            if jumping_left_animation_clock < 10:
+                window.blit(self.images["jumping_left"][0], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][0]
+            elif jumping_left_animation_clock < 20:
+                window.blit(self.images["jumping_left"][1], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][1]
+            elif jumping_left_animation_clock < 30:
+                window.blit(self.images["jumping_left"][2], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][2]
+            elif jumping_left_animation_clock < 40:
+                window.blit(self.images["jumping_left"][3], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][3]
+            elif jumping_left_animation_clock < 50:
+                window.blit(self.images["jumping_left"][4], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][4]
+            elif jumping_left_animation_clock < 60:
+                window.blit(self.images["jumping_left"][5], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][5]
+            else:
+                window.blit(self.images["jumping_left"][6], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_left"][6]
+        elif self.state == "walking right" and not self.grounded:
+            if jumping_right_animation_clock < 10:
+                window.blit(self.images["jumping_right"][0], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][0]
+            elif jumping_right_animation_clock < 20:
+                window.blit(self.images["jumping_right"][1], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][1]
+            elif jumping_right_animation_clock < 30:
+                window.blit(self.images["jumping_right"][2], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][2]
+            elif jumping_right_animation_clock < 40:
+                window.blit(self.images["jumping_right"][3], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][3]
+            elif jumping_right_animation_clock < 50:
+                window.blit(self.images["jumping_right"][4], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][4]
+            elif jumping_right_animation_clock < 60:
+                window.blit(self.images["jumping_right"][5], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][5]
+            else:
+                window.blit(self.images["jumping_right"][6], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["jumping_right"][6]
+        elif self.state == "jumping up":
+            if self.facing == "left":
+                if jumping_left_animation_clock < 10:
+                    window.blit(self.images["jumping_left"][0], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][0]
+                elif jumping_left_animation_clock < 20:
+                    window.blit(self.images["jumping_left"][1], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][1]
+                elif jumping_left_animation_clock < 30:
+                    window.blit(self.images["jumping_left"][2], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][2]
+                elif jumping_left_animation_clock < 40:
+                    window.blit(self.images["jumping_left"][3], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][3]
+                elif jumping_left_animation_clock < 50:
+                    window.blit(self.images["jumping_left"][4], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][4]
+                elif jumping_left_animation_clock < 60:
+                    window.blit(self.images["jumping_left"][5], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][5]
+                else:
+                    window.blit(self.images["jumping_left"][6], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_left"][6]
+            elif self.facing == "right":
+                if jumping_right_animation_clock < 10:
+                    window.blit(self.images["jumping_right"][0], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][0]
+                elif jumping_right_animation_clock < 20:
+                    window.blit(self.images["jumping_right"][1], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][1]
+                elif jumping_right_animation_clock < 30:
+                    window.blit(self.images["jumping_right"][2], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][2]
+                elif jumping_right_animation_clock < 40:
+                    window.blit(self.images["jumping_right"][3], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][3]
+                elif jumping_right_animation_clock < 50:
+                    window.blit(self.images["jumping_right"][4], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][4]
+                elif jumping_right_animation_clock < 60:
+                    window.blit(self.images["jumping_right"][5], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][5]
+                else:
+                    window.blit(self.images["jumping_right"][6], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["jumping_right"][6]
 
     def draw_hitbox(self, window):
         if self.current_sprite is not None:
