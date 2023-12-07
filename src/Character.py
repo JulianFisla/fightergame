@@ -28,7 +28,7 @@ class Character(ABC):
         self.animation_tick = 0
         self.facing = "right"
 
-    def update(self):
+    def update(self, player1, player2):
         raise NotImplementedError
 
     def draw(self, window):

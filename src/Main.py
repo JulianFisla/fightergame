@@ -120,6 +120,38 @@ def load_images():
 
     player1.images["jumping_left"] = jumping_left
 
+    light_right = []
+
+    for i in range(3):
+        # Load the image into a Surface
+        image = pygame.image.load("../assets/sprites/light_right_" + str(i + 1) + ".png")
+
+        # Calculate the new size
+        new_size = (image.get_width() * 4, image.get_height() * 4)
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(image, new_size)
+
+        light_right.append(scaled_image)
+
+    player1.images["light_right"] = light_right
+
+    light_left = []
+
+    for i in range(3):
+        # Load the image into a Surface
+        image = pygame.image.load("../assets/sprites/light_left_" + str(i + 1) + ".png")
+
+        # Calculate the new size
+        new_size = (image.get_width() * 4, image.get_height() * 4)
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(image, new_size)
+
+        light_left.append(scaled_image)
+
+    player1.images["light_left"] = light_left
+
     for i in range(9):
         # Load the image into a Surface
         image = pygame.image.load("../assets/background/background_" + str(i + 1) + ".png")
@@ -140,8 +172,8 @@ def update_game_state():
     for event in pygame.event.get():
         EventHandler.process_event(event, player1, player2)
 
-    player1.update()
-    player2.update()
+    player1.update(player1, player2)
+    player2.update(player1, player2)
 
 
 def update_background():
