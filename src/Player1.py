@@ -18,14 +18,17 @@ class Player1(Character):
     light_right_animation_clock = 0
     light_left_animation_clock = 0
 
+    light2_right_animation_clock = 0
+    light2_left_animation_clock = 0
+
     attack = False
+
+    light_attack_option = 1
 
     def __init__(self, screen_x, screen_y, x, y, health, speed):
         super().__init__(screen_x, screen_y, x, y, health, speed)
 
     def update(self, player1, player2):
-
-        # print("Player 1:", self.state, "Player 1:", self.grounded)
 
         if self.screen_y >= 520:
             self.screen_y = 520
@@ -37,10 +40,16 @@ class Player1(Character):
 
         # print(self.light_right_animation_clock)
 
-        if self.light_left_animation_clock >= 16 or self.light_left_animation_clock >= 16:
-            self.attack = False
-            self.state = "standing"
-            EventHandler.process_event(None, player1, player2)
+        if self.light_attack_option == 1:
+            if self.light_left_animation_clock >= 16 or self.light_right_animation_clock >= 16:
+                self.attack = False
+                self.state = "standing"
+                EventHandler.process_event(None, player1, player2)
+        else:
+            if self.light2_left_animation_clock >= 16 or self.light2_right_animation_clock >= 16:
+                self.attack = False
+                self.state = "standing"
+                EventHandler.process_event(None, player1, player2)
 
         # print("Player x:", self.x, "Player y:", self.y)
         # print("Player screen_x:", self.screen_x, "Player screen_y:", self.screen_y)
@@ -152,11 +161,19 @@ class Player1(Character):
         walking_right_animation_clock = self.animation_tick % 72
 
         if self.attack:
-            self.light_right_animation_clock += 1
-            self.light_left_animation_clock += 1
+            if self.light_attack_option == 1:
+                self.light_right_animation_clock += 1
+                self.light_left_animation_clock += 1
+            else:
+                self.light2_right_animation_clock += 1
+                self.light2_left_animation_clock += 1
         else:
-            self.light_right_animation_clock = 0
-            self.light_left_animation_clock = 0
+            if self.light_attack_option == 1:
+                self.light_right_animation_clock = 0
+                self.light_left_animation_clock = 0
+            else:
+                self.light2_right_animation_clock = 0
+                self.light2_left_animation_clock = 0
 
         if self.grounded:
             self.jumping_left_animation_clock = 0
@@ -420,21 +437,43 @@ class Player1(Character):
 
         elif self.state == "light right":
 
-            if self.light_right_animation_clock < 8:
-                window.blit(self.images["light_right"][0], (self.screen_x, self.screen_y))
-                self.current_sprite = self.images["light_right"][0]
-            elif self.light_right_animation_clock < 16:
-                window.blit(self.images["light_right"][1], (self.screen_x, self.screen_y))
-                self.current_sprite = self.images["light_right"][1]
+            if self.light_attack_option == 1:
+                if self.light_right_animation_clock < 8:
+                    window.blit(self.images["light_right"][0], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["light_right"][0]
+                elif self.light_right_animation_clock < 16:
+                    window.blit(self.images["light_right"][1], (self.screen_x, self.screen_y))
+                    self.current_sprite = self.images["light_right"][1]
+            else:
+                if self.light2_right_animation_clock < 6:
+                    window.blit(self.images["light_right2"][0], (self.screen_x - 90, self.screen_y - 20))
+                    self.current_sprite = self.images["light_right2"][0]
+                elif self.light2_right_animation_clock < 10:
+                    window.blit(self.images["light_right2"][1], (self.screen_x + 30, self.screen_y - 200))
+                    self.current_sprite = self.images["light_right2"][1]
+                elif self.light2_right_animation_clock < 16:
+                    window.blit(self.images["light_right2"][2], (self.screen_x + 30, self.screen_y - 80))
+                    self.current_sprite = self.images["light_right2"][2]
 
         elif self.state == "light left":
 
-            if self.light_left_animation_clock < 8:
-                window.blit(self.images["light_left"][0], (self.screen_x - 180, self.screen_y))
-                self.current_sprite = self.images["light_left"][0]
-            elif self.light_left_animation_clock < 16:
-                window.blit(self.images["light_left"][1], (self.screen_x - 145, self.screen_y))
-                self.current_sprite = self.images["light_left"][1]
+            if self.light_attack_option == 1:
+                if self.light_left_animation_clock < 8:
+                    window.blit(self.images["light_left"][0], (self.screen_x - 225, self.screen_y + 10))
+                    self.current_sprite = self.images["light_left"][0]
+                elif self.light_left_animation_clock < 16:
+                    window.blit(self.images["light_left"][1], (self.screen_x - 190, self.screen_y + 10))
+                    self.current_sprite = self.images["light_left"][1]
+            else:
+                if self.light2_left_animation_clock < 6:
+                    window.blit(self.images["light_left2"][0], (self.screen_x + 110, self.screen_y - 30))
+                    self.current_sprite = self.images["light_left2"][0]
+                elif self.light2_left_animation_clock < 10:
+                    window.blit(self.images["light_left2"][1], (self.screen_x - 20, self.screen_y - 200))
+                    self.current_sprite = self.images["light_left2"][1]
+                elif self.light2_left_animation_clock < 16:
+                    window.blit(self.images["light_left2"][2], (self.screen_x - 130, self.screen_y - 80))
+                    self.current_sprite = self.images["light_left2"][2]
 
     def draw_hitbox(self, window):
         if self.current_sprite is not None:
@@ -462,10 +501,28 @@ class Player1(Character):
                 self.hitbox = pygame.Rect(self.screen_x - 20, self.screen_y, self.current_sprite.get_width(),
                                           self.current_sprite.get_height())
             elif self.current_sprite == self.images["light_left"][0]:
-                self.hitbox = pygame.Rect(self.screen_x - 180, self.screen_y, self.current_sprite.get_width(),
+                self.hitbox = pygame.Rect(self.screen_x - 225, self.screen_y + 10, self.current_sprite.get_width(),
                                           self.current_sprite.get_height())
             elif self.current_sprite == self.images["light_left"][1]:
-                self.hitbox = pygame.Rect(self.screen_x - 145, self.screen_y, self.current_sprite.get_width(),
+                self.hitbox = pygame.Rect(self.screen_x - 190, self.screen_y + 10, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["light_right2"][0]:
+                self.hitbox = pygame.Rect(self.screen_x - 90, self.screen_y - 20, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["light_right2"][1]:
+                self.hitbox = pygame.Rect(self.screen_x + 30, self.screen_y - 200, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["light_right2"][2]:
+                self.hitbox = pygame.Rect(self.screen_x + 30, self.screen_y - 80, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["light_left2"][0]:
+                self.hitbox = pygame.Rect(self.screen_x + 110, self.screen_y - 30, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["light_left2"][1]:
+                self.hitbox = pygame.Rect(self.screen_x - 20, self.screen_y - 200, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["light_left2"][2]:
+                self.hitbox = pygame.Rect(self.screen_x - 130, self.screen_y - 80, self.current_sprite.get_width(),
                                           self.current_sprite.get_height())
             else:
                 self.hitbox = pygame.Rect(self.screen_x, self.screen_y, self.current_sprite.get_width(),

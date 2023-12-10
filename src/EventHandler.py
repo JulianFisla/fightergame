@@ -39,6 +39,11 @@ def process_event(event, player1, player2):
         player1.facing = "right"
         attack = True
 
+        if player1.light_attack_option == 1:
+            player1.light_attack_option = 2
+        elif player1.light_attack_option == 2:
+            player1.light_attack_option = 1
+
     elif event is not None and event.type == KEYDOWN and keys[K_LEFT] and not player1.attack and player1.grounded and not attack:
 
         player1.attack = True
@@ -46,6 +51,11 @@ def process_event(event, player1, player2):
         player1.state = "light left"
         player1.facing = "left"
         attack = True
+
+        if player1.light_attack_option == 1:
+            player1.light_attack_option = 2
+        elif player1.light_attack_option == 2:
+            player1.light_attack_option = 1
 
     elif keys[K_a] and not player1.attack:
 
