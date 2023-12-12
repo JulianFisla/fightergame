@@ -38,6 +38,7 @@ class Player1(Character):
         else:
             self.grounded = False
 
+        # print("Player 1:", self.state)
         # print(self.light_right_animation_clock)
 
         if self.light_attack_option == 1:
