@@ -237,6 +237,7 @@ def update_game_state():
     for event in pygame.event.get():
         EventHandler.process_event(event, player1, player2)
 
+    # Update game state
     player1.update(player1, player2)
     player2.update(player1, player2)
 
