@@ -3,11 +3,12 @@ import pygame
 from pygame.locals import *
 
 attack = False
+jump_attack = False
 
 
 def process_event(event, player1, player2):
-    global attack
-    key_down = None
+    global attack, jump_attack
+
     if event is not None and event.type == QUIT:
         pygame.quit()
         sys.exit()
@@ -18,20 +19,54 @@ def process_event(event, player1, player2):
 
     keys = pygame.key.get_pressed()
 
-    if keys[K_SPACE] and keys[K_d] and player1.grounded and not player1.attack:
+    if keys[K_a] and keys[K_d]:
+        player1.moving = "none"
+    elif keys[K_a]:
+        player1.moving = "left"
+    elif keys[K_d]:
+        player1.moving = "right"
+    else:
+        player1.moving = "none"
+
+    if keys[K_SPACE] and keys[K_d] and player1.grounded and not player1.attack and not jump_attack:
+        # print("key hit right")
         player1.state = "jumping right"
         attack = True
 
-    elif keys[K_SPACE] and keys[K_a] and player1.grounded and not player1.attack:
+    elif keys[K_SPACE] and keys[K_a] and player1.grounded and not player1.attack and not jump_attack:
+        # print("key hit left")
         player1.state = "jumping left"
         attack = True
-    elif keys[K_SPACE] and player1.grounded and not player1.attack:
+    elif keys[K_SPACE] and player1.grounded and not player1.attack and not jump_attack:
         player1.state = "jumping up"
     elif keys[K_w]:
         pass
         # player1.state = "jumping up"
 
-    elif event is not None and event.type == KEYDOWN and keys[K_RIGHT] and not player1.attack and player1.grounded and not attack:
+    # attacking jumping left
+    elif (event is not None and event.type == KEYDOWN
+          and keys[K_LEFT] and not player1.attack and not player1.grounded and not jump_attack):
+
+        # print("key hit left")
+        player1.jump_attack = True
+        player1.jumping_attack_left_animation_clock = 0
+        player1.state = "jumping attack left"
+        player1.facing = "left"
+        jump_attack = True
+
+    # attacking jumping right
+    elif (event is not None and event.type == KEYDOWN
+          and keys[K_RIGHT] and not player1.attack and not player1.grounded and not jump_attack):
+
+        # print("key hit right")
+        player1.jump_attack = True
+        player1.jumping_attack_right_animation_clock = 0
+        player1.state = "jumping attack right"
+        player1.facing = "right"
+        jump_attack = True
+
+    elif (event is not None and event.type == KEYDOWN
+          and keys[K_RIGHT] and not player1.attack and player1.grounded and not attack):
 
         player1.attack = True
         player1.light_right_animation_clock = 0
@@ -44,7 +79,8 @@ def process_event(event, player1, player2):
         elif player1.light_attack_option == 2:
             player1.light_attack_option = 1
 
-    elif event is not None and event.type == KEYDOWN and keys[K_LEFT] and not player1.attack and player1.grounded and not attack:
+    elif (event is not None and event.type == KEYDOWN
+          and keys[K_LEFT] and not player1.attack and player1.grounded and not attack):
 
         player1.attack = True
         player1.light_left_animation_clock = 0
@@ -57,14 +93,14 @@ def process_event(event, player1, player2):
         elif player1.light_attack_option == 2:
             player1.light_attack_option = 1
 
-    elif keys[K_a] and not player1.attack:
+    elif keys[K_a] and not player1.attack and not jump_attack:
 
         player1.state = "walking left"
         player1.facing = "left"
     elif keys[K_s] and not player1.attack:
         pass
         # player1.state = "crouching"
-    elif keys[K_d] and not player1.attack:
+    elif keys[K_d] and not player1.attack and not jump_attack:
 
         player1.state = "walking right"
         player1.facing = "right"
@@ -74,6 +110,11 @@ def process_event(event, player1, player2):
             player1.state = "light right"
         elif player1.facing == "left":
             player1.state = "light left"
+    elif player1.jump_attack:
+        if player1.facing == "right":
+            player1.state = "jumping attack right"
+        elif player1.facing == "left":
+            player1.state = "jumping attack left"
 
     else:
         player1.state = "standing"
