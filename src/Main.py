@@ -24,6 +24,7 @@ pygame.display.set_caption('2D Fighter')
 player1 = Player1(420, 520, 175 + 210, 0, 100, 9)
 player2 = Player2(0, 0, 0, 0, 100, 5)
 
+# set up player start positions
 player1_start_x = player1.x
 player1_start_y = player1.y
 
