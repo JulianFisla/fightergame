@@ -21,6 +21,7 @@ WINDOW_HEIGHT = 800
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('2D Fighter')
 
+# initialize player objects
 player1 = Player1(420, 520, 175 + 210, 0, 100, 9)
 player2 = Player2(0, 0, 0, 0, 100, 5)
 
