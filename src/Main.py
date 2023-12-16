@@ -245,7 +245,7 @@ def update_game_state():
 
 
 def update_background():
-    # global vairables
+    # global variables
     global background_animation_tick, background_offset_x, background_offset_y
 
     if background_animation_tick == 10000:
