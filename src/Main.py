@@ -203,7 +203,7 @@ def load_images():
 
     player1.images["jumping_light_right"] = jumping_light_right
 
-    jumping_light_left =[]
+    jumping_light_left = []
 
     for i in range(3):
         # Load the image into a Surface
@@ -245,6 +245,7 @@ def update_game_state():
 
 
 def update_background():
+    # global vairables
     global background_animation_tick, background_offset_x, background_offset_y
 
     if background_animation_tick == 10000:
