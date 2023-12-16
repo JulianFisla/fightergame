@@ -637,6 +637,18 @@ class Player1(Character):
             elif self.current_sprite == self.images["light_left2"][2]:
                 self.hitbox = pygame.Rect(self.screen_x - 130, self.screen_y - 80, self.current_sprite.get_width(),
                                           self.current_sprite.get_height())
+            elif self.current_sprite == self.images["jumping_light_left"][1]:
+                self.hitbox = pygame.Rect(self.screen_x - 65, self.screen_y - 150, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["jumping_light_left"][2]:
+                self.hitbox = pygame.Rect(self.screen_x - 135, self.screen_y, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["jumping_light_right"][0]:
+                self.hitbox = pygame.Rect(self.screen_x - 80, self.screen_y, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
+            elif self.current_sprite == self.images["jumping_light_right"][1]:
+                self.hitbox = pygame.Rect(self.screen_x + 15, self.screen_y - 160, self.current_sprite.get_width(),
+                                          self.current_sprite.get_height())
             else:
                 self.hitbox = pygame.Rect(self.screen_x, self.screen_y, self.current_sprite.get_width(),
                                           self.current_sprite.get_height())
