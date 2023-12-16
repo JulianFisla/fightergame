@@ -24,8 +24,12 @@ class Player1(Character):
     jumping_attack_left_animation_clock = 0
     jumping_attack_right_animation_clock = 0
 
+    sig_left_animation_clock = 0
+    sig_right_animation_clock = 0
+
     attack = False
     jump_attack = False
+    sig_attack = False
 
     light_attack_option = 1
 
@@ -35,6 +39,8 @@ class Player1(Character):
         super().__init__(screen_x, screen_y, x, y, health, speed)
 
     def update(self, player1, player2):
+
+        # EventHandler.process_event(None, player1, player2)
 
         # print(self.screen_y)
         if self.screen_y >= 520:
@@ -69,6 +75,17 @@ class Player1(Character):
                 self.state = "jumping up"
             EventHandler.process_event(None, player1, player2)
 
+        if self.sig_left_animation_clock >= 36 or self.sig_right_animation_clock >= 36:
+            self.sig_attack = False
+            if self.grounded:
+                self.state = "standing"
+            else:
+                self.state = "jumping up"
+            EventHandler.process_event(None, player1, player2)
+
+        if (self.sig_right_animation_clock == 0 or self.sig_left_animation_clock == 0) and EventHandler.shift_up == True:
+            EventHandler.sig_attack = False
+            EventHandler.shift_up = False
         # print("Player x:", self.x, "Player y:", self.y)
         # print("Player screen_x:", self.screen_x, "Player screen_y:", self.screen_y)
 
@@ -226,6 +243,62 @@ class Player1(Character):
                 self.current_jump -= self.gravity
                 self.screen_y -= self.current_jump
 
+        elif self.state == "sig left":
+
+            # print("jumping left")
+            if self.x <= 0:
+                pass
+            elif self.wall_collision:
+                if self.sig_left_animation_clock < 16:
+                    pass
+                elif self.sig_left_animation_clock <= 36:
+                    self.screen_x -= self.speed * 1.5
+                    self.x -= self.speed
+
+                    if not self.screen_y >= 520:
+                        self.y += self.current_jump
+                        self.current_jump -= self.gravity
+                        self.screen_y -= self.current_jump
+            else:
+                if self.sig_left_animation_clock < 16:
+                    pass
+                elif self.sig_left_animation_clock <= 36:
+                    self.screen_x = 420
+                    self.x -= self.speed
+
+                    if not self.screen_y >= 520:
+                        self.y += self.current_jump
+                        self.current_jump -= self.gravity
+                        self.screen_y -= self.current_jump
+
+        elif self.state == "sig right":
+
+            # print("jumping left")
+            if self.x >= 1020:
+                pass
+            elif self.wall_collision:
+                if self.sig_left_animation_clock < 16:
+                    pass
+                elif self.sig_left_animation_clock <= 36:
+                    self.screen_x += self.speed * 1.5
+                    self.x += self.speed
+
+                    if not self.screen_y >= 520:
+                        self.y += self.current_jump
+                        self.current_jump -= self.gravity
+                        self.screen_y -= self.current_jump
+            else:
+                if self.sig_left_animation_clock < 16:
+                    pass
+                elif self.sig_left_animation_clock <= 36:
+                    self.screen_x = 420
+                    self.x += self.speed
+
+                    if not self.screen_y >= 520:
+                        self.y += self.current_jump
+                        self.current_jump -= self.gravity
+                        self.screen_y -= self.current_jump
+
         elif self.state == "jumping up":
             # print("jumping up")
             if self.grounded:
@@ -265,6 +338,13 @@ class Player1(Character):
         else:
             self.jumping_attack_left_animation_clock = 0
             self.jumping_attack_right_animation_clock = 0
+
+        if self.sig_attack:
+            self.sig_left_animation_clock += 1
+            self.sig_right_animation_clock += 1
+        else:
+            self.sig_left_animation_clock = 0
+            self.sig_right_animation_clock = 0
 
         if self.grounded:
             self.jumping_left_animation_clock = 0
@@ -587,6 +667,28 @@ class Player1(Character):
             elif self.jumping_attack_right_animation_clock <= 16:
                 window.blit(self.images["jumping_light_right"][2], (self.screen_x, self.screen_y))
                 self.current_sprite = self.images["jumping_light_right"][2]
+
+        elif self.state == "sig left":
+            if self.sig_left_animation_clock < 16:
+                window.blit(self.images["sig_left"][0], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["sig_left"][0]
+            elif self.sig_left_animation_clock < 26:
+                window.blit(self.images["sig_left"][1], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["sig_left"][1]
+            elif self.sig_left_animation_clock <= 36:
+                window.blit(self.images["sig_left"][2], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["sig_left"][2]
+
+        elif self.state == "sig right":
+            if self.sig_right_animation_clock < 16:
+                window.blit(self.images["sig_right"][0], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["sig_right"][0]
+            elif self.sig_right_animation_clock < 26:
+                window.blit(self.images["sig_right"][1], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["sig_right"][1]
+            elif self.sig_right_animation_clock <= 36:
+                window.blit(self.images["sig_right"][2], (self.screen_x, self.screen_y))
+                self.current_sprite = self.images["sig_right"][2]
 
     def draw_hitbox(self, window):
         if self.current_sprite is not None:
