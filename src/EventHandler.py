@@ -14,8 +14,6 @@ def process_event(event, player1, player2):
         sys.exit()
     elif event is not None and event.type == MOUSEBUTTONDOWN:
         pass
-    elif event is not None and event.type == KEYDOWN:
-        key_down = event
 
     keys = pygame.key.get_pressed()
 
