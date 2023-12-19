@@ -61,6 +61,7 @@ class Player1(Character):
                 self.state = "standing"
                 EventHandler.process_event(None, player1, player2)
 
+        # print(self.jumping_attack_left_animation_clock)
         if self.jumping_attack_left_animation_clock >= 16 or self.jumping_attack_right_animation_clock >= 16:
             self.jump_attack = False
             EventHandler.jump_attack = False
@@ -241,6 +242,7 @@ class Player1(Character):
 
     def draw(self, window):
 
+        # print("Player 1:", self.state)
         standing_animation_clock = self.animation_tick % 60
         walking_left_animation_clock = self.animation_tick % 63
         walking_right_animation_clock = self.animation_tick % 72
