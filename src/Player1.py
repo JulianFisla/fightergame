@@ -247,6 +247,7 @@ class Player1(Character):
         walking_left_animation_clock = self.animation_tick % 63
         walking_right_animation_clock = self.animation_tick % 72
 
+        # print("standing_animation_clock:", standing_animation_clock)
         if self.attack:
             if self.light_attack_option == 1:
                 self.light_right_animation_clock += 1
