@@ -49,6 +49,7 @@ class Player1(Character):
         # print("Player 1:", self.state)
         # print(self.light_right_animation_clock)
 
+        # update game state
         if self.light_attack_option == 1:
             if self.light_left_animation_clock >= 16 or self.light_right_animation_clock >= 16:
                 self.attack = False
