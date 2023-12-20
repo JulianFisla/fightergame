@@ -15,6 +15,7 @@ def process_event(event, player1, player2):
     elif event is not None and event.type == MOUSEBUTTONDOWN:
         pass
 
+    # store keys pressed
     keys = pygame.key.get_pressed()
 
     if keys[K_a] and keys[K_d]:
