@@ -19,6 +19,7 @@ def process_event(event, player1, player2):
     # store keys pressed
     keys = pygame.key.get_pressed()
 
+    # what direction the player is moving in
     if keys[K_a] and keys[K_d]:
         player1.moving = "none"
     elif keys[K_a]:
