@@ -9,6 +9,7 @@ jump_attack = False
 def process_event(event, player1, player2):
     global attack, jump_attack
 
+    # if player has quit the application
     if event is not None and event.type == QUIT:
         pygame.quit()
         sys.exit()
