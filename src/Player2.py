@@ -8,7 +8,6 @@ class Player2(Character):
 
     def update(self, player1, player2):
         pass
-        # print("Player 2:", self.state)
 
     def draw(self, window):
         pass
