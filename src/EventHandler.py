@@ -120,6 +120,7 @@ def process_event(event, player1, player2):
     else:
         player1.state = "standing"
 
+    # if key has been released
     if event is not None and event.type == KEYUP:
         if event.key == K_RIGHT or event.key == K_LEFT:
             attack = False
