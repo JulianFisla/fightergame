@@ -31,6 +31,8 @@ player1_start_y = player1.y
 
 
 def load_images():
+
+    # load images
     standing_left = []
 
     for i in range(4):
