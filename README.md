@@ -1,2 +1,2 @@
 # fightergame
-Basic streetfighter like game with plans to implement machine learning into enemy interactions.aa
+Basic streetfighter like game with plans to implement machine learning into enemy interactions.aaa
